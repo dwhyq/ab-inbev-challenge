@@ -1,8 +1,8 @@
+'use client'
 import React from 'react';
 
 const SortDropdown = ({ onSort }) => {
   const handleSort = e => {
-    console.log(e.target.value, "here...............")
     onSort(e.target.value);
   };
 

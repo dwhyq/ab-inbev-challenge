@@ -5,7 +5,7 @@ import Image from "next/image";
 const ProductList = ({ products, onAddToCart }) => {
   return (
     <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2">
-      {products.map((product) => (
+      {(products || []).map((product) => (
         <div
           key={product.id}
           className="bg-white rounded-md border p-2 md:p-2 flex flex-col gap-2 h-full"

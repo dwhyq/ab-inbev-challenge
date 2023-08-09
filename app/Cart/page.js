@@ -10,7 +10,7 @@ const Cart = ({
 }) => {
   // Calculate the total price of all items in the cart
   let totalPrice = 0;
-  if (cartItems.length > 0) {
+  if ((cartItems || []).length > 0) {
     // Calculate total price using reduce
     totalPrice = cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
@@ -24,7 +24,7 @@ const Cart = ({
     <div className="p-2 rounded-md min-h-screen">
       <h2 className="font-bold text-center">Shopping Cart</h2>
       {/* Map through each item in the cart */}
-      {cartItems.map((item) => (
+      {(cartItems || []).map((item) => (
         <div
           key={item.id}
           className="flex flex-col justify-between items-center mt-2 border-b-2"
@@ -55,7 +55,7 @@ const Cart = ({
         </div>
       ))}
       {/* Conditionally render the "Remove all items" button */}
-      {cartItems.length > 0 && (
+      {(cartItems || []).length > 0 && (
         <div className="mt-4">
           <button
             className="bg-red-500 text-white px-3 py-1 rounded"

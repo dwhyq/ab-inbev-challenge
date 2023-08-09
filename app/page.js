@@ -1,34 +1,49 @@
-"use client";
+'use client'
 import React, { useState, useEffect } from "react";
 import ProductList from "./ProductList/page";
 import SearchBar from "./SearchBar/page";
 import SortDropdown from "./Sortdropdown/page";
 import AxiosApiClient from "./useApiClient";
 import { BASE_URL, PRODUCT_PATH } from "./constants";
-import Cart from "./Cart/page";
+import Link from "next/link";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [displayCart, setDisplayCart] = useState(false); 
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch product data from an API (replace with your API endpoint)
-    const getRequest = new AxiosApiClient(BASE_URL);
-    getRequest
+    // Create a reusable API client instance
+    const apiClient = new AxiosApiClient(BASE_URL);
+
+    // Fetch product data from the API
+    apiClient
       .get(PRODUCT_PATH)
       .then((response) => {
         setProducts(response);
         setDisplayedProducts(response);
-        console.log("rerender.....");
+        setIsLoading(false);
       })
-      .catch((error) => console.log("some error, ", error));
+      .catch((error) => {
+        console.log("Error fetching product data:", error);
+        setIsLoading(false);
+      });
+
+    // Load saved cart items from local storage
+    const savedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    if (savedCartItems) {
+      setCartItems(savedCartItems);
+    }
   }, []);
 
+  useEffect(() => {
+    // Update local storage when cart items change
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const handleSearch = (searchQuery) => {
-    // Filter products based on searchQuery
+    // Filter products based on search query
     const filtered = products.filter((product) =>
       product.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -36,23 +51,49 @@ const Home = () => {
   };
 
   const handleSort = (direction) => {
-    // Sort products based on direction ('asc' or 'desc')
+    // Sort products based on price direction
     const sorted = [...products].sort((a, b) =>
-      direction === "asc" ? a.price - b.price : direction === "desc" ? b.price - a.price : null
+      direction === "asc"
+        ? a.price - b.price
+        : direction === "desc"
+        ? b.price - a.price
+        : 0
     );
     setDisplayedProducts(sorted);
   };
+
   const handleAddToCart = (product) => {
-    setCartItems((prevCartItems) => [...prevCartItems, product]);
-    setDisplayCart(true); // Set displayCart to true when item is added
+    // Add product to cart, either by updating quantity or adding a new item
+    const existingItemIndex = cartItems.findIndex((item) => item.id === product.id);
+
+    if (existingItemIndex !== -1) {
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingItemIndex].quantity += 1;
+      setCartItems(updatedCartItems);
+    } else {
+      setCartItems((prevCartItems) => [...prevCartItems, { ...product, quantity: 1 }]);
+    }
   };
+
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Product List</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Product List</h1>
+        <Link href="/CartPage">
+          <button className="bg-blue-500 text-white px-3 py-1 rounded">
+            Cart ({totalQuantity})
+          </button>
+        </Link>
+      </div>
       <SearchBar onSearch={handleSearch} />
       <SortDropdown onSort={handleSort} />
-      {displayCart && <Cart cartItems={cartItems} />} 
-      <ProductList products={displayedProducts} onAddToCart={handleAddToCart} />
+      {isLoading ? (
+        <div className="text-center mt-4">Loading...</div>
+      ) : (
+        <ProductList products={displayedProducts} onAddToCart={handleAddToCart} />
+      )}
     </div>
   );
 };

@@ -21,12 +21,12 @@ const ProductList = ({ products, onAddToCart }) => {
             <p className="font-bold text-sm rounded-md text-center">
               {getFirstFourWords(product.title)}
             </p>
-            <p className="text-white font-bold bg-orange-600 rounded-md p-1 md:p-2">
+            <p className="text-white text-sm font-bold bg-orange-600 rounded-md p-1 md:p-2">
               ${product.price}
             </p>
           </div>
           <button
-            className="bg-black text-white rounded font-bold px-0.5 md:p-2 mt-auto"
+            className="bg-green-700 text-sm text-white rounded font-bold px-0.5 py-0.5 md:p-2 mt-auto"
             onClick={() => onAddToCart(product)}
           >
             Add to Cart

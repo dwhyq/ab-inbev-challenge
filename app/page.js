@@ -80,9 +80,14 @@ const Home = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Product List</h1>
+        <div className="flex w-fit">
+        <span className="text-2xl font-bold">Buy</span>
+        <span className="text-2xl font-bold underline-offset-2 text-orange-500">more</span>
+        <span className="text-2xl font-bold underline-offset-2 ">!</span>
+        </div>
+        
         <Link href="/CartPage">
-          <button className="bg-blue-500 text-white px-3 py-1 rounded">
+          <button className="bg-orange-500 text-white font-bold px-3 py-1 rounded">
             Cart ({totalQuantity})
           </button>
         </Link>

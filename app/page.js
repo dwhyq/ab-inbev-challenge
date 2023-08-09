@@ -6,6 +6,7 @@ import SortDropdown from "./Sortdropdown/page";
 import AxiosApiClient from "./useApiClient";
 import { BASE_URL, PRODUCT_PATH } from "./constants";
 import Link from "next/link";
+import Loading from "./loading";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -95,7 +96,7 @@ const Home = () => {
       <SearchBar onSearch={handleSearch} />
       <SortDropdown onSort={handleSort} />
       {isLoading ? (
-        <div className="text-center mt-4">Loading...</div>
+        <div><Loading/>p</div>
       ) : (
         <ProductList products={displayedProducts} onAddToCart={handleAddToCart} />
       )}

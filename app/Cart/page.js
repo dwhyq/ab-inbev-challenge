@@ -79,7 +79,6 @@ const Cart = ({
         </div>
       </div>
       <div className="mt-8 text-center font-bold text-orange-600">
-        {/* Link to continue shopping */}
         <Link href="/">Continue Shopping</Link>
       </div>
     </div>

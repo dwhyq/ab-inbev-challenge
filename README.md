@@ -2,6 +2,8 @@
 
 This project is a web application that demonstrates a shopping cart functionality using Next.js and React. Users can view a list of products, search for specific products, sort them by price, add items to the cart, and manage the cart contents.
 
+## Live URL: [https://ikenna-ab-inbev-challenge.vercel.app/](https://ikenna-ab-inbev-challenge.vercel.app/)
+
 ## Getting Started
 
 **Prerequisites:**

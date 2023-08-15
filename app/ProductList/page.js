@@ -3,12 +3,25 @@ import { getFirstFourWords } from "../constants";
 import Image from "next/image";
 
 const ProductList = ({ products, onAddToCart }) => {
-  const [clickedButtonId, setClickedButtonId] = useState(null);
+  const [addedProducts, setAddedProducts] = useState([]);
 
   const handleAddToCartClick = (product) => {
+    if (!addedProducts.some((addedProduct) => addedProduct.id === product.id)) {
+      setAddedProducts([...addedProducts, { ...product, count: 1 }]);
+    } else {
+      setAddedProducts((prevAddedProducts) =>
+        prevAddedProducts.map((addedProduct) =>
+          addedProduct.id === product.id
+            ? { ...addedProduct, count: addedProduct.count + 1 }
+            : addedProduct
+        )
+      );
+    }
     onAddToCart(product);
-    setClickedButtonId(product.id);
   };
+
+  const isProductAdded = (productId) =>
+    addedProducts.some((addedProduct) => addedProduct.id === productId);
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2">
@@ -34,13 +47,17 @@ const ProductList = ({ products, onAddToCart }) => {
           </div>
           <button
             className={`${
-              clickedButtonId === product.id
-                ? "bg-black"
+              isProductAdded(product.id)
+                ? "bg-red-500"
                 : "bg-green-700"
             } text-sm text-white rounded font-bold px-0.5 py-0.5 md:p-2 mt-auto`}
             onClick={() => handleAddToCartClick(product)}
           >
-            {clickedButtonId === product.id ? "Added" : "Add to Cart"}
+            {isProductAdded(product.id)
+              ? `Added (${addedProducts.find(
+                  (addedProduct) => addedProduct.id === product.id
+                ).count})`
+              : "Add to Cart"}
           </button>
         </div>
       ))}

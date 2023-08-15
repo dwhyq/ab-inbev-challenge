@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { getFirstFourWords } from "../constants";
 import Image from "next/image";
 
 const ProductList = ({ products, onAddToCart }) => {
+  const [clickedButtonId, setClickedButtonId] = useState(null);
+
+  const handleAddToCartClick = (product) => {
+    onAddToCart(product);
+    setClickedButtonId(product.id);
+  };
+
   return (
     <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-2">
       {(products || []).map((product) => (
@@ -26,10 +33,14 @@ const ProductList = ({ products, onAddToCart }) => {
             </p>
           </div>
           <button
-            className="bg-green-700 text-sm text-white rounded font-bold px-0.5 py-0.5 md:p-2 mt-auto"
-            onClick={() => onAddToCart(product)}
+            className={`${
+              clickedButtonId === product.id
+                ? "bg-black"
+                : "bg-green-700"
+            } text-sm text-white rounded font-bold px-0.5 py-0.5 md:p-2 mt-auto`}
+            onClick={() => handleAddToCartClick(product)}
           >
-            Add to Cart
+            {clickedButtonId === product.id ? "Added" : "Add to Cart"}
           </button>
         </div>
       ))}

@@ -7,6 +7,7 @@ import AxiosApiClient from "./useApiClient";
 import { BASE_URL, PRODUCT_PATH } from "./constants";
 import Link from "next/link";
 import Loading from "./loading";
+import { FaShoppingCart } from "react-icons/fa";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -88,9 +89,9 @@ const Home = () => {
         </div>
         
         <Link href="/CartPage">
-          <button className="bg-orange-500 text-white font-bold px-3 py-1 rounded">
-            Cart ({totalQuantity})
-          </button>
+          <div className="bg-orange-500 text-white font-bold py-2 px-2 relative rounded flex">
+          <span><FaShoppingCart/></span> <span className="absolute bottom-5 bg-black px-1 rounded-full left-4 text-white">{totalQuantity}</span> 
+          </div>
         </Link>
       </div>
       <SearchBar onSearch={handleSearch} />

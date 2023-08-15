@@ -97,7 +97,7 @@ const Home = () => {
       <SearchBar onSearch={handleSearch} />
       <SortDropdown onSort={handleSort} />
       {isLoading ? (
-        <div><Loading/>p</div>
+        <div><Loading/></div>
       ) : (
         <ProductList products={displayedProducts} onAddToCart={handleAddToCart} />
       )}
